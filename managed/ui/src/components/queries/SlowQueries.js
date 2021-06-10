@@ -188,7 +188,25 @@ const SlowQueriesComponent = () => {
     localStorage.setItem('__yb_close_query_info__', true);
   };
 
-  const displayedQueries = filterBySearchTokens(ysqlQueries, searchTokens, dropdownColKeys);
+  // const displayedQueries = filterBySearchTokens(ysqlQueries, searchTokens, dropdownColKeys);
+  const displayedQueries = [
+    {
+      calls: 1,
+      datname: 'postgres',
+      local_blks_hit: 0,
+      local_blks_written: 0,
+      max_time: 0.85729,
+      mean_time: 0.4596,
+      min_time: 0.12058,
+      query: 'BACKFILL INDEX 21184 READ TIME 6610626360311533568 PARTITION x\'0aaa\'',
+      queryid: 3155616829219000,
+      rolname: 'yugabyte',
+      rows: 5,
+      stddev_time: 0.00252,
+      total_time: 3.05239
+    },
+    ...filterBySearchTokens(ysqlQueries, searchTokens, dropdownColKeys)
+  ]
 
   const tableColHeaders = [
     <TableHeaderColumn key="query-id-key" dataField="queryid" isKey={true} hidden={true} />,

@@ -277,28 +277,37 @@ deactivate_virtualenv() {
 }
 
 activate_virtualenv() {
+  log "Raj"
   if ! should_use_virtual_env; then
     return
   fi
 
+  log "Raj1"
   if [[ -d "$YB_INSTALLED_MODULES_DIR" ]]; then
     export PYTHONPATH="${YB_INSTALLED_MODULES_DIR}:${MANAGED_PYTHONPATH_ORIGINAL}"
     export PATH="${YB_INSTALLED_MODULES_DIR}/bin:${MANAGED_PATH_ORIGINAL}"
     return
   fi
 
+  log "Raj2"
   if [[ ! $virtualenv_dir = */$YB_VIRTUALENV_BASENAME ]]; then
+    log "Raj3"
     fatal "Internal error: virtualenv_dir ('$virtualenv_dir') must end" \
           "with YB_VIRTUALENV_BASENAME ('$YB_VIRTUALENV_BASENAME')"
   fi
   if [[ ! -d $virtualenv_dir ]]; then
+    log "Raj4"
     # We need to be using system python to install the virtualenv module or create a new virtualenv.
     deactivate_virtualenv
+    log "Raj6"
     set_python_executable
+    log "Raj7"
     if [[ $YB_MANAGED_DEVOPS_USE_PYTHON3 == "0" ]]; then
+      log "Raj8"
       pip_install "virtualenv<20"
+      log "Raj9"
     fi
-
+    log "Raj10"
     (
       set -x
       cd "${virtualenv_dir%/*}"
@@ -310,10 +319,12 @@ activate_virtualenv() {
       fi
     )
   elif "$is_linux"; then
+    log "Raj5"
     deactivate_virtualenv
   fi
 
   if [[ ! -f "$virtualenv_dir/bin/activate" ]]; then
+    log "Raj6"
     fatal "File '$virtualenv_dir/bin/activate' does not exist."
   fi
 
@@ -427,6 +438,8 @@ run_pip() {
   if [[ $YB_MANAGED_DEVOPS_USE_PYTHON3 == "1" ]]; then
     "$PYTHON_EXECUTABLE" -m pip "$@"
   else
+    log "RUN_PIP"
+    log "$(which pip2.7)"
     $PYTHON_EXECUTABLE "$(which pip2.7)" "$@"
   fi
 }
@@ -460,8 +473,9 @@ pip_install() {
     log "Python module $module_name already installed, not upgrading."
   else
     log "Installing Python module(s) outside virtualenv, using --user."
-
+    log "pip_1"
     run_pip install --user "$@"
+    log "pip_2"
   fi
 }
 

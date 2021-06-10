@@ -46,7 +46,7 @@ components:
           - name: POSTGRES_DB
             static_val: 'yugaware'
           - name: POSTGRES_USER
-            static_val: 'postgres'
+            static_val: 'root'
           - name: POSTGRES_PASSWORD
             static_val: '{{repl ConfigOption "dbpass"}}'
           - name: PGDATA

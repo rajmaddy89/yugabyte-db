@@ -26,6 +26,7 @@ Options:
 EOT
 }
 
+log "Hello"
 while [[ $# -gt 0 ]]; do
   case $1 in
     --no-virtual-env)
@@ -50,38 +51,45 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
+log "Hello1"
 if [[ "$should_create_package" == "1" ]]; then
   log "Creating wheels package $YB_PYTHON_MODULES_PACKAGE"
   create_pymodules_package
   exit
 fi
-
+log "Hello2"
 if [[ $should_use_package == "1" && -f "$YB_PYTHON_MODULES_PACKAGE" ]]; then
   log "Installing from $YB_PYTHON_MODULES_PACKAGE"
   install_pymodules_package
   log "Finished installing to $YB_INSTALLED_MODULES_DIR"
   exit
 fi
-
+log "Hello3"
 if should_use_virtual_env; then
+  log "Hello11"
   activate_virtualenv
+  log "Hello12"
   fix_virtualenv_permissions
 fi
-
+log "Hello4"
 if [[ $should_use_package == "1" && -f "$YB_PYTHON_MODULES_PACKAGE" ]]; then
   log "Found virtualenv package $YB_PYTHON_MODULES_PACKAGE"
   tar -xf $YB_PYTHON_MODULES_PACKAGE
+  log "Hello5"
 else
   if [[ $YB_MANAGED_DEVOPS_USE_PYTHON3 == "0" ]]; then
     # looks like there is some issue with setuptools and virtualenv on python2.
     # https://github.com/pypa/virtualenv/issues/1493, adding this requirement
+    log "Hello6"
     pip_install "setuptools<45"
+    log "Hello7"
   fi
-
+  log "Hello8"
   pip_install -r "$FROZEN_REQUIREMENTS_FILE"
+  log "Hello9"
   log "Installing ybops package"
   install_ybops_package
-
+  log "Hello10"
   if [[ "$use_dynamic_paths" == "1" ]]; then
     log "Changing virtualenv absolute paths to dynamic paths"
     # Change shebangs to use local python instead of absolute python path - required for our Jenkins
